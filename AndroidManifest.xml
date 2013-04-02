@@ -15,7 +15,8 @@
         android:theme="@style/AppTheme" >
         
         <service
-        	android:name="MyService"
+            android:enabled="true"
+        	android:name=".AppLockdownService"
         	android:icon="@drawable/ic_launcher"
         	android:label="@string/service_name">
 		</service>

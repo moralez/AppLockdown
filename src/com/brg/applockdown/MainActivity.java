@@ -18,21 +18,11 @@ public class MainActivity extends Activity {
 	private String tag = MainActivity.class.getSimpleName();
 	private Button startButton;
 	private Button stopButton;
+	private Button pingButton;
 	private Boolean appLockdownServiceIsBound;
 	private AppLockdownService appLockdownService;
 	
-	private ServiceConnection appLockdownServiceConnection = new ServiceConnection() {
-		
-		@Override
-		public void onServiceDisconnected(ComponentName name) {
-			appLockdownService = null;
-		}
-		
-		@Override
-		public void onServiceConnected(ComponentName name, IBinder service) {
-			appLockdownService = ((AppLockdownService.AppLockdownServiceBinder) service).getService();
-		}
-	};
+	private ServiceConnection appLockdownServiceConnection;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +46,29 @@ public class MainActivity extends Activity {
 				MainActivity.this.stopAppLockdownService(getApplicationContext());
 			}
 		});
+		
+		pingButton = (Button) findViewById(R.id.ping_activity_button);
+		pingButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				MainActivity.this.pingService();
+			}
+		});
+		
+		appLockdownServiceConnection = new ServiceConnection() {
+			
+			@Override
+			public void onServiceDisconnected(ComponentName name) {
+				appLockdownService = null;
+			}
+			
+			@Override
+			public void onServiceConnected(ComponentName name, IBinder service) {
+				appLockdownService = ((AppLockdownService.AppLockdownServiceBinder) service).getService();
+			}
+		};
 	}
 
 	@Override
@@ -76,6 +89,15 @@ public class MainActivity extends Activity {
 		if (appLockdownServiceIsBound) {
 			unbindService(appLockdownServiceConnection);
 			appLockdownServiceIsBound = false;
+		}
+	}
+	
+	public void pingService() {
+		if (appLockdownServiceIsBound && appLockdownService != null) {			
+			Log.i(tag, "ping");
+			appLockdownService.ping();
+		} else {
+			Log.e(tag, "Error: AppLockdownService Not Bound or Is Null");
 		}
 	}
 }

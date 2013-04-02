@@ -7,5 +7,6 @@
     <string name="service_name">App Lockdown</string>
     <string name="start_service">Start Service</string>
     <string name="stop_service">Stop Service</string>
+    <string name="ping_service">Ping Service</string>
 
 </resources>

@@ -20,17 +20,23 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="105dp"
         android:text="@string/start_service" />
 
     <Button
         android:id="@+id/stop_activity_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/start_activity_button"
-        android:layout_alignRight="@+id/start_activity_button"
         android:layout_below="@+id/start_activity_button"
-        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
         android:text="@string/stop_service" />
+
+    <Button
+        android:id="@+id/ping_activity_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stop_activity_button"
+        android:layout_centerHorizontal="true"
+        android:text="@string/ping_service" />
 
 </RelativeLayout>

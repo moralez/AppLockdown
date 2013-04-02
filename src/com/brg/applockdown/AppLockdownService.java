@@ -25,7 +25,12 @@ public class AppLockdownService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		super.onStartCommand(intent, flags, startId);
+		Log.i(tag, "Service onStartCommand");
 		return START_STICKY;
+	}
+	
+	public void ping() {
+		Log.i(tag, "pong");
 	}
 	
 	public class AppLockdownServiceBinder extends Binder {
