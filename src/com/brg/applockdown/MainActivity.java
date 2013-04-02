@@ -1,17 +1,18 @@
 package com.brg.applockdown;
 
-import android.os.Bundle;
-import android.os.IBinder;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -19,7 +20,7 @@ public class MainActivity extends Activity {
 	private Button startButton;
 	private Button stopButton;
 	private Button pingButton;
-	private Boolean appLockdownServiceIsBound;
+	private Boolean appLockdownServiceIsBound = false;
 	private AppLockdownService appLockdownService;
 	
 	private ServiceConnection appLockdownServiceConnection = new ServiceConnection() {
@@ -96,6 +97,7 @@ public class MainActivity extends Activity {
 			appLockdownService.ping();
 		} else {
 			Log.e(tag, "Error: AppLockdownService Not Bound or Is Null");
+			Toast.makeText(getApplicationContext(), "AppLockdown Service Not Found", Toast.LENGTH_LONG).show();
 		}
 	}
 }
