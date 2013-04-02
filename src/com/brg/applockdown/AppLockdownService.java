@@ -1,5 +1,8 @@
 package com.brg.applockdown;
 
+import java.util.List;
+
+import android.app.ActivityManager;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
@@ -42,6 +45,15 @@ public class AppLockdownService extends Service {
 	
 	public void ping() {
 		Log.i(tag, "pong");
+		
+		// Logen's note -- just trying stuff out, can put this elsewhere.
+		ActivityManager activityManager = (ActivityManager)this.getSystemService( ACTIVITY_SERVICE );
+		List<ActivityManager.RecentTaskInfo> recentTasks = activityManager.getRecentTasks(100, ActivityManager.RECENT_WITH_EXCLUDED);
+		Log.i(tag,"Total Recent Tasks: " + recentTasks.size());
+		for (ActivityManager.RecentTaskInfo task : recentTasks)
+		{
+			Log.i(tag,"name: " + task.baseIntent.getComponent().getPackageName());
+		}
 	}
 	
 	public class AppLockdownServiceBinder extends Binder {
