@@ -9,11 +9,12 @@ import android.util.Log;
 public class AppLockdownService extends Service {
 
 	private String tag = AppLockdownService.class.getSimpleName();
+	private Binder mBinder = new AppLockdownServiceBinder();
 	
 	@Override
 	public IBinder onBind(Intent arg0) {
 		// TODO Auto-generated method stub
-		return null;
+		return mBinder;
 	}
 
 	@Override

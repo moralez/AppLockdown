@@ -22,7 +22,18 @@ public class MainActivity extends Activity {
 	private Boolean appLockdownServiceIsBound;
 	private AppLockdownService appLockdownService;
 	
-	private ServiceConnection appLockdownServiceConnection;
+	private ServiceConnection appLockdownServiceConnection = new ServiceConnection() {
+		
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
+			appLockdownService = null;
+		}
+		
+		@Override
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			appLockdownService = ((AppLockdownService.AppLockdownServiceBinder) service).getService();
+		}
+	};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,19 +67,6 @@ public class MainActivity extends Activity {
 				MainActivity.this.pingService();
 			}
 		});
-		
-		appLockdownServiceConnection = new ServiceConnection() {
-			
-			@Override
-			public void onServiceDisconnected(ComponentName name) {
-				appLockdownService = null;
-			}
-			
-			@Override
-			public void onServiceConnected(ComponentName name, IBinder service) {
-				appLockdownService = ((AppLockdownService.AppLockdownServiceBinder) service).getService();
-			}
-		};
 	}
 
 	@Override
