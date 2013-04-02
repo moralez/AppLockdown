@@ -5,6 +5,8 @@ import java.util.List;
 import android.app.ActivityManager;
 import android.app.Service;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
@@ -36,7 +38,7 @@ public class AppLockdownService extends Service {
 		handler.postDelayed(new Runnable() {
 		    public void run() {
 		        showNotification();
-		        handler.postDelayed(this, 600); 
+		        handler.postDelayed(this, 1000); 
 		    }
 		 }, 600); 
 		
@@ -47,12 +49,22 @@ public class AppLockdownService extends Service {
 		Log.i(tag, "pong");
 		
 		// Logen's note -- just trying stuff out, can put this elsewhere.
+		// What's the max return of get recent tasks? just pulled 100 out of the air
 		ActivityManager activityManager = (ActivityManager)this.getSystemService( ACTIVITY_SERVICE );
 		List<ActivityManager.RecentTaskInfo> recentTasks = activityManager.getRecentTasks(100, ActivityManager.RECENT_WITH_EXCLUDED);
 		Log.i(tag,"Total Recent Tasks: " + recentTasks.size());
 		for (ActivityManager.RecentTaskInfo task : recentTasks)
 		{
 			Log.i(tag,"name: " + task.baseIntent.getComponent().getPackageName());
+		}
+		
+		// Print list of installed apps
+		final PackageManager packageManager = getPackageManager();
+		List<ApplicationInfo> packages = packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
+
+		for (ApplicationInfo packageInfo : packages) {
+			Log.d(tag,"App Name: " + packageInfo.loadLabel(packageManager).toString());
+		    Log.d(tag, "Package Name: " + packageInfo.packageName);
 		}
 	}
 	
