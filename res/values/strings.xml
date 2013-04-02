@@ -8,5 +8,6 @@
     <string name="start_service">Start Service</string>
     <string name="stop_service">Stop Service</string>
     <string name="ping_service">Ping Service</string>
+    <string name="notification_text">This is a notification</string>
 
 </resources>

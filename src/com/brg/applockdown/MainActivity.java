@@ -32,7 +32,9 @@ public class MainActivity extends Activity {
 		
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
+			Log.i(tag, "onServiceConnected");
 			appLockdownService = ((AppLockdownService.AppLockdownServiceBinder) service).getService();
+			startService(new Intent(getApplicationContext(), AppLockdownService.class));
 		}
 	};
 	
@@ -86,6 +88,7 @@ public class MainActivity extends Activity {
 	public void stopAppLockdownService(Context context) {
 		Log.i(tag, "Stopping App Lockdown Service");
 		if (appLockdownServiceIsBound) {
+			appLockdownService.stopSelf();
 			unbindService(appLockdownServiceConnection);
 			appLockdownServiceIsBound = false;
 		}

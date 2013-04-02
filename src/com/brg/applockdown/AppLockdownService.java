@@ -3,6 +3,7 @@ package com.brg.applockdown;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -27,6 +28,15 @@ public class AppLockdownService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		super.onStartCommand(intent, flags, startId);
 		Log.i(tag, "Service onStartCommand");
+		
+		final Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+		    public void run() {
+		        showNotification();
+		        handler.postDelayed(this, 600); 
+		    }
+		 }, 600); 
+		
 		return START_STICKY;
 	}
 	
@@ -38,5 +48,9 @@ public class AppLockdownService extends Service {
 		public AppLockdownService getService() {	
 			return AppLockdownService.this;
 	    }
+	}
+	
+	private void showNotification() {
+		Log.i(tag, "beep");
 	}
 }
