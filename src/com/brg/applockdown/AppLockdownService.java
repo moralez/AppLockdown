@@ -38,7 +38,7 @@ public class AppLockdownService extends Service {
 		handler.postDelayed(new Runnable() {
 		    public void run() {
 		        showNotification();
-		        handler.postDelayed(this, 1000); 
+		        handler.postDelayed(this, 2000); 
 		    }
 		 }, 600); 
 		
@@ -48,16 +48,7 @@ public class AppLockdownService extends Service {
 	public void ping() {
 		Log.i(tag, "pong");
 		
-		// Logen's note -- just trying stuff out, can put this elsewhere.
-		// What's the max return of get recent tasks? just pulled 100 out of the air
-		ActivityManager activityManager = (ActivityManager)this.getSystemService( ACTIVITY_SERVICE );
-		List<ActivityManager.RecentTaskInfo> recentTasks = activityManager.getRecentTasks(100, ActivityManager.RECENT_WITH_EXCLUDED);
-		Log.i(tag,"Total Recent Tasks: " + recentTasks.size());
-		for (ActivityManager.RecentTaskInfo task : recentTasks)
-		{
-			Log.i(tag,"name: " + task.baseIntent.getComponent().getPackageName());
-		}
-		
+		// Logen's note -- just trying stuff out, can put this elsewhere.		
 		// Print list of installed apps
 		final PackageManager packageManager = getPackageManager();
 		List<ApplicationInfo> packages = packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
@@ -76,5 +67,20 @@ public class AppLockdownService extends Service {
 	
 	private void showNotification() {
 		Log.i(tag, "beep");
+		
+		// logen -- hijacking your repeating task for my own devilish purpose
+		taskInRecentList("com.android.contacts");
+	}
+	
+	// logen -- simplest test
+	private void taskInRecentList(String protectedAppName) {
+		ActivityManager activityManager = (ActivityManager)this.getSystemService( ACTIVITY_SERVICE );
+		ActivityManager.RecentTaskInfo lastTask = activityManager.getRecentTasks(1, ActivityManager.RECENT_WITH_EXCLUDED).get(0);
+		String currentTaskName = lastTask.baseIntent.getComponent().getPackageName(); 
+		if (protectedAppName.equals(currentTaskName)) {
+			Log.i(tag,"WAS LAST APP: " + currentTaskName);
+		} else {
+			Log.i(tag,"Nope, last app was: " + currentTaskName);
+		}
 	}
 }
